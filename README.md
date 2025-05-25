@@ -25,6 +25,7 @@ pip install pywin32 psutil selenium webdriver-manager
 Make sure Google Chrome is installed on your system.
 
 webdriver-manager will automatically download the compatible ChromeDriver binary.
+
 4. Save Script
 
 Save the above script as, for example, poe2_rank_service.py somewhere accessible. IMPORTANT: Edit the config part to your need. You may want to delete "HC SSF", if that is not your league. Modify to your liking. I decided not to use var, because league title may be too long.
