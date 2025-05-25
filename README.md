@@ -27,7 +27,7 @@ Make sure Google Chrome is installed on your system.
 webdriver-manager will automatically download the compatible ChromeDriver binary.
 4. Save Script
 
-Save the above script as, for example, poe2_rank_service.py somewhere accessible.
+Save the above script as, for example, poe2_rank_service.py somewhere accessible. IMPORTANT: Edit the config part to your need.
 5. Register the Service
 
 Open Command Prompt as Administrator, then:
