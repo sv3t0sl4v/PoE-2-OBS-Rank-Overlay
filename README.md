@@ -60,6 +60,8 @@ python poe2_rank_service.py remove
 
     If OBS is not running, it sleeps and waits 30 seconds before checking again.
 
+8. You need to add text item to your scene and adjust as you like. Point OBS to read from the file where the script stores your rank. GL HF SS!
+ 
 Notes
 
     Running headless Chrome requires a modern Chrome installed.
