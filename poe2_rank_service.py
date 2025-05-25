@@ -76,7 +76,7 @@ def check_rank():
                 break
 
         if your_char is None:
-            output_text = "Rank not found (maybe character is dead or not on ladder)"
+            output_text = "N/A"
         else:
             your_class = your_char["class"]
             your_rank = your_char["rank"]
