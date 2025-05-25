@@ -60,6 +60,8 @@ python poe2_rank_service.py remove
 
     If OBS is not running, it sleeps and waits 30 seconds before checking again.
 
+    You can set up the service to start automatically when the system starts, if you like.
+
 8. You need to add text item to your scene and adjust as you like. Point OBS to read from the file where the script stores your rank. GL HF SS!
  
 Notes
