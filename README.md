@@ -71,3 +71,5 @@ Notes
     Make sure the script has write permissions to the output directory.
 
     Running as a service means it will start on Windows boot (if set to Automatic).
+    
+    More about me: https://www.youtube.com/@vest0levs
