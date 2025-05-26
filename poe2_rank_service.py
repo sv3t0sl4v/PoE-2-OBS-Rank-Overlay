@@ -89,7 +89,7 @@ def check_rank():
             )
 
             output_text = (
-                f"HC SSF Rank: #{your_rank}\n"
+                f"Global Rank: #{your_rank}\n"
                 f"Class Rank: #{relative_position}"
             )
 
