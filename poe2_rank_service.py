@@ -69,29 +69,37 @@ def check_rank():
                 "class": char_class
             })
 
-        your_char = None
-        for char in alive_chars:
-            if char["account"] == ACCOUNT_NAME.lower() and char["character"] == CHARACTER_NAME.lower():
-                your_char = char
-                break
+        global_rank = "N/A"
+        class_rank = "N/A"
 
-        if your_char is None:
-            output_text = "N/A"
-        else:
-            your_class = your_char["class"]
-            your_rank = your_char["rank"]
+        # Try to find the character
+        your_char = next(
+            (char for char in alive_chars
+             if char["account"] == ACCOUNT_NAME.lower()
+             and char["character"] == CHARACTER_NAME.lower()),
+            None
+        )
 
-            same_class_chars = [c for c in alive_chars if c["class"] == your_class]
+        if your_char:
+            global_rank = f"#{your_char['rank']}"
+            # Compute class rank
+            same_class_chars = [c for c in alive_chars if c["class"] == your_char["class"]]
             same_class_chars.sort(key=lambda c: c["rank"])
+            for i, c in enumerate(same_class_chars):
+                if c["rank"] == your_char["rank"]:
+                    class_rank = f"#{i + 1}"
+                    break
+        else:
+            # No character found, try to get top-ranked account char
+            account_chars = [char for char in alive_chars if char["account"] == ACCOUNT_NAME.lower()]
+            if account_chars:
+                top_char = min(account_chars, key=lambda c: c["rank"])
+                global_rank = f"#{top_char['rank']}"
 
-            relative_position = next(
-                (i + 1 for i, c in enumerate(same_class_chars) if c["rank"] == your_rank), None
-            )
-
-            output_text = (
-                f"Global Rank: #{your_rank}\n"
-                f"Class Rank: #{relative_position}"
-            )
+        output_text = (
+            f"Global Rank: {global_rank}\n"
+            f"Class Rank: {class_rank}"
+        )
 
         with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
             f.write(output_text)
