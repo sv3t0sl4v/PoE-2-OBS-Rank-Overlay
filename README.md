@@ -33,28 +33,27 @@ Save the above script as, for example, poe2_rank_service.py somewhere accessible
 5. Register the Service
 
 Open Command Prompt as Administrator, then:
-
+<pre>
 python poe2_rank_service.py install
 python poe2_rank_service.py start
-
-    install registers the script as a Windows service.
-
-    start starts the service immediately.
+</pre>
+install registers the script as a Windows service.
+start starts the service immediately.
 
 To stop or remove the service:
-
+<pre>
 python poe2_rank_service.py stop
 python poe2_rank_service.py remove
-
+</pre>
 To restart the service:
-
+<pre>
 python poe2_rank_service.py restart
-
+</pre>
 This is functionally equivalent to:
-
+<pre>
 python poe2_rank_service.py stop
 python poe2_rank_service.py start
-
+</pre>
 6. Logs & Output
 
     The service writes the rank output to the file you set in OUTPUT_FILE (change this path if needed).
@@ -86,3 +85,4 @@ Notes
     Running as a service means it will start on Windows boot (if set to Automatic).
     
     More about me: https://www.youtube.com/@vest0levs
+
