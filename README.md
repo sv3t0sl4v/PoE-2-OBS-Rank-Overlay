@@ -66,9 +66,9 @@ python poe2_rank_service.py remove
 
 8. You need to add text item to your scene and adjust as you like. Point OBS to read from the file where the script stores your rank. GL HF SS!
  
+IMPORTANT: If you make changes to the script, e.g. update character name and/or ladder link, you have to also restart the PoE2 Ladder Rank Checker Service! If you don't know how to, just restart your computer. That will do. :)
+
 Notes
-    
-    IMPORTANT: If you make changes to the script, e.g. update character name and/or ladder link, you have to also restart the PoE2 Ladder Rank Checker Service! If you don't know how to, just restart your computer. That will do. :)
     
     Running headless Chrome requires a modern Chrome installed.
 
