@@ -46,6 +46,15 @@ To stop or remove the service:
 python poe2_rank_service.py stop
 python poe2_rank_service.py remove
 
+To restart the service:
+
+python poe2_rank_service.py restart
+
+This is functionally equivalent to:
+
+python poe2_rank_service.py stop
+python poe2_rank_service.py start
+
 6. Logs & Output
 
     The service writes the rank output to the file you set in OUTPUT_FILE (change this path if needed).
