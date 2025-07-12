@@ -86,3 +86,4 @@ Notes
     
     More about me: https://www.youtube.com/@vest0levs
 
+Donate: https://paypal.me/vest0levs
