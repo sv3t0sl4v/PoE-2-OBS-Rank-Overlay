@@ -3,22 +3,26 @@
 ![Service Demo](demo.png)
 
 How to Install & Run
+
 1. Install Python
 
 Make sure Python 3.x is installed on your Windows machine. You can download it from python.org.
 
 Make sure to add Python to PATH during installation.
+
 2. Install Dependencies
 
 Open PowerShell or CMD as Administrator and run:
 
 pip install pywin32 psutil selenium webdriver-manager
 
-    pywin32 — needed for Windows service and event logging.
+    pip install pywin32 psutil selenium webdriver-manager
+    
+pywin32 — needed for Windows service and event logging.
 
-    psutil — to check if OBS is running.
+psutil — to check if OBS is running.
 
-    selenium and webdriver-manager — to automate Chrome browser.
+selenium and webdriver-manager — to automate Chrome browser.
 
 3. Chrome Browser & Driver
 
