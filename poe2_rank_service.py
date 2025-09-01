@@ -14,9 +14,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 # Config
 ACCOUNT_NAME = 'XXX#0000'
-CHARACTER_NAME = 'XXXXXX'
-LEAGUE_URL = 'https://pathofexile2.com/ladder/HC%2520SSF%2520Dawn%2520of%2520the%2520Hunt'
-OUTPUT_FILE = r'D:\\rank.txt' 
+LEAGUE_URL = 'https://pathofexile2.com/ladder/HC%2520SSF%2520Rise%2520of%2520the%2520Abyssal'
+OUTPUT_FILE = r'E:\scripts\rank.txt'
+SHOW_RIP = 1  # 1 = show RIP section, 0 = hide it
 
 def is_obs_running():
     for proc in psutil.process_iter(['name']):
@@ -41,8 +41,7 @@ def check_rank():
         )
 
         rows = driver.find_elements(By.CSS_SELECTOR, "table tbody tr")
-
-        alive_chars = []
+        alive_chars, dead_chars = [], []
 
         for row in rows:
             cols = row.find_elements(By.TAG_NAME, "td")
@@ -54,57 +53,72 @@ def check_rank():
             character = cols[2].text.strip()
             char_class = cols[3].text.strip()
 
-            if "(Dead)" in character or "(Retired)" in character:
-                continue
-
             try:
                 rank = int(rank_text)
             except ValueError:
                 continue
 
-            alive_chars.append({
+            entry = {
                 "rank": rank,
                 "account": account.lower(),
                 "character": character.lower(),
+                "character_raw": character,
                 "class": char_class
-            })
+            }
 
-        global_rank = "N/A"
-        class_rank = "N/A"
+            if "(Dead)" in character or "(Retired)" in character:
+                dead_chars.append(entry)
+            else:
+                alive_chars.append(entry)
 
-        # Try to find the character
-        your_char = next(
-            (char for char in alive_chars
-             if char["account"] == ACCOUNT_NAME.lower()
-             and char["character"] == CHARACTER_NAME.lower()),
-            None
-        )
+        # Find my alive chars
+        account_alive = [c for c in alive_chars if c["account"] == ACCOUNT_NAME.lower()]
+        account_dead = [c for c in dead_chars if c["account"] == ACCOUNT_NAME.lower()]
 
-        if your_char:
-            global_rank = f"#{your_char['rank']}"
-            # Compute class rank
-            same_class_chars = [c for c in alive_chars if c["class"] == your_char["class"]]
-            same_class_chars.sort(key=lambda c: c["rank"])
-            for i, c in enumerate(same_class_chars):
-                if c["rank"] == your_char["rank"]:
-                    class_rank = f"#{i + 1}"
-                    break
+        if not account_alive:
+            output_text = "HC SSF Global Rank: N/A\nClass Rank: N/A"
         else:
-            # No character found, try to get top-ranked account char
-            account_chars = [char for char in alive_chars if char["account"] == ACCOUNT_NAME.lower()]
-            if account_chars:
-                top_char = min(account_chars, key=lambda c: c["rank"])
-                global_rank = f"#{top_char['rank']}"
+            top_char = min(account_alive, key=lambda c: c["rank"])
+            global_rank = f"#{top_char['rank']}"
 
-        output_text = (
-            f"Global Rank: {global_rank}\n"
-            f"Class Rank: {class_rank}"
-        )
+            # Compute alive class ranks
+            class_ranks = []
+            for char in sorted(account_alive, key=lambda c: c["rank"]):
+                same_class = sorted([c for c in alive_chars if c["class"] == char["class"]], key=lambda c: c["rank"])
+                for i, c in enumerate(same_class):
+                    if c["rank"] == char["rank"]:
+                        class_ranks.append(f"#{i + 1} {char['class'].title()}")
+                        break
 
+            lines = []
+            if len(class_ranks) <= 3:
+                lines.append("Class Rank: " + ", ".join(class_ranks))
+            else:
+                first_line = "Class Rank: " + ", ".join(class_ranks[:2]) + ","
+                lines.append(first_line)
+                for i in range(2, len(class_ranks), 3):
+                    lines.append(", ".join(class_ranks[i:i+3]))
+
+            output_text = f"HC SSF Global Rank: {global_rank}\n" + "\n".join(lines)
+
+        # Compute RIP class ranks (only if enabled)
+        if SHOW_RIP and account_dead:
+            rip_ranks = []
+            for char in sorted(account_dead, key=lambda c: c["rank"]):
+                same_class = sorted([c for c in dead_chars if c["class"] == char["class"]], key=lambda c: c["rank"])
+                for i, c in enumerate(same_class):
+                    if c["rank"] == char["rank"]:
+                        rip_ranks.append(f"#{i + 1} {char['class'].title()}")
+                        break
+
+            if rip_ranks:
+                output_text += "\nRIP: " + ", ".join(rip_ranks)
+
+        # Write to file
         with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
             f.write(output_text)
 
-        servicemanager.LogInfoMsg(f"Wrote to {OUTPUT_FILE}: {output_text}")
+        servicemanager.LogInfoMsg(f"Wrote to {OUTPUT_FILE}:\n{output_text}")
 
     finally:
         driver.quit()
